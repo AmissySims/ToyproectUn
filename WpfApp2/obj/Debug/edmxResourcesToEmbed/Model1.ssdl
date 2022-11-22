@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище ShopBdModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Orderr">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DataOrder" Type="date" Nullable="false" />
+    <Property Name="TotalCost" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Toy">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" />
+    <Property Name="Description" Type="nvarchar" MaxLength="1024" />
+    <Property Name="Weight" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="Height" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="Width" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="Cost" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="GeneralImage" Type="varbinary(max)" />
+    <Property Name="IsAvailable" Type="bit" />
+  </EntityType>
+  <EntityType Name="ToyOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ToyId" Type="int" Nullable="false" />
+    <Property Name="Count" Type="int" />
+    <Property Name="OrderId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_ToyOrder_Orderr">
+    <End Role="Orderr" Type="Self.Orderr" Multiplicity="1" />
+    <End Role="ToyOrder" Type="Self.ToyOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orderr">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ToyOrder">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ToyOrder_Toy">
+    <End Role="Toy" Type="Self.Toy" Multiplicity="1" />
+    <End Role="ToyOrder" Type="Self.ToyOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Toy">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ToyOrder">
+        <PropertyRef Name="ToyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище ShopBdModelContainer">
+    <EntitySet Name="Orderr" EntityType="Self.Orderr" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Toy" EntityType="Self.Toy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ToyOrder" EntityType="Self.ToyOrder" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ToyOrder_Orderr" Association="Self.FK_ToyOrder_Orderr">
+      <End Role="Orderr" EntitySet="Orderr" />
+      <End Role="ToyOrder" EntitySet="ToyOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ToyOrder_Toy" Association="Self.FK_ToyOrder_Toy">
+      <End Role="Toy" EntitySet="Toy" />
+      <End Role="ToyOrder" EntitySet="ToyOrder" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
